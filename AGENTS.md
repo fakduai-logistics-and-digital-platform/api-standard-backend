@@ -18,6 +18,7 @@ Skill Usage:
 - Use `/scrutinize` for plan, PR, diff, design, or code-review second opinions. Use it before merge when risk is non-trivial; skip for tiny mechanical edits.
 - Use `/improve-codebase-architecture` when user asks for architecture improvement, refactoring opportunities, testability, module seams, or AI-navigability. Do not use during normal feature work unless architecture blocks testing or clarity.
 - Use `/to-issues` when converting a plan, spec, PRD, or large task into tracker issues. Prefer after plan is stable, not during early exploration.
+- Use `/use-modern-go` whenever writing, modifying, fixing, or refactoring Go code to ensure modern idioms (up to Go 1.27) are used instead of legacy patterns.
 - Token rule: choose the narrowest skill that matches the task; do not chain skills unless output from one clearly feeds the next.
 
 Key Principles:
