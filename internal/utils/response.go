@@ -7,7 +7,7 @@ import (
 )
 
 // JsonResponse sends a standardized JSON response with a message and optional data.
-func JsonResponse(c echo.Context, statusCode int, ok bool, data interface{}) error {
+func JsonResponse(c echo.Context, statusCode int, ok bool, data any) error {
 	resp := dto.StandardReponseBody{
 		Ok: ok,
 	}

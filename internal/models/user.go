@@ -1,10 +1,10 @@
 package models
 
 import (
-	"fdlp-standard-api/internal/types"
 	"time"
+	"uuid"
 
-	"github.com/google/uuid"
+	"fdlp-standard-api/internal/types"
 )
 
 type User struct {

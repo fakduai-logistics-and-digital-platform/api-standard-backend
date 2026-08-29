@@ -95,7 +95,7 @@ func (h *userHandler) GetUsers(c echo.Context) error {
 	pageSize := c.QueryParam("pageSize")
 	filterBy := c.QueryParam("filterBy")
 	filterValue := c.QueryParam("filterValue")
-	filter := make(map[string]interface{})
+	filter := make(map[string]any)
 
 	if filterBy != "" && filterValue != "" {
 		filter[filterBy] = filterValue

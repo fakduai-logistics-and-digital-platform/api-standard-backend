@@ -31,7 +31,7 @@ func NewRoleRepository(db *mongo.Database) RoleRepository {
 }
 
 func (repo *roleRepository) GetById(id string) (*models.Role, error) {
-	result, err := utils.ExecuteWithBreaker(repo.breaker, func() (interface{}, error) {
+	result, err := utils.ExecuteWithBreaker(repo.breaker, func() (any, error) {
 		var role models.Role
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
@@ -50,7 +50,7 @@ func (repo *roleRepository) GetById(id string) (*models.Role, error) {
 }
 
 func (repo *roleRepository) GetByName(name string) (*models.Role, error) {
-	result, err := utils.ExecuteWithBreaker(repo.breaker, func() (interface{}, error) {
+	result, err := utils.ExecuteWithBreaker(repo.breaker, func() (any, error) {
 		var role models.Role
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
@@ -69,7 +69,7 @@ func (repo *roleRepository) GetByName(name string) (*models.Role, error) {
 }
 
 func (repo *roleRepository) Create(role *models.Role) error {
-	_, err := utils.ExecuteWithBreaker(repo.breaker, func() (interface{}, error) {
+	_, err := utils.ExecuteWithBreaker(repo.breaker, func() (any, error) {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 

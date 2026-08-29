@@ -18,7 +18,7 @@ func RoleMiddleware(requiredRole string) echo.MiddlewareFunc {
 			}
 
 			// Verify JWT as usual
-			user, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+			user, _ := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
 				if _, err := token.Method.(*jwt.SigningMethodHMAC); !err {
 					return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 				}

@@ -27,7 +27,7 @@ func JWTAuthMiddleware(next echo.HandlerFunc, cfg *config.Config) echo.HandlerFu
 		ctx := c.Request().Context() // Correctly use Echo's request context
 
 		// Check if the token is blacklisted using Circuit Breaker
-		_, err := utils.ExecuteWithBreaker(redisBreaker, func() (interface{}, error) {
+		_, err := utils.ExecuteWithBreaker(redisBreaker, func() (any, error) {
 			result, err := rdb.Get(ctx, tokenString).Result()
 			if err == nil && result == "blacklisted" {
 				return nil, fmt.Errorf("token blacklisted")
@@ -43,7 +43,7 @@ func JWTAuthMiddleware(next echo.HandlerFunc, cfg *config.Config) echo.HandlerFu
 		// or fail if it's mandatory. Here we'll just log and continue for now if it's a breaker error.
 
 		// Verify JWT as usual
-		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 			}

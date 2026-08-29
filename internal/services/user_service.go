@@ -17,7 +17,7 @@ type UserService interface {
 	CreateUser(user dto.CreateUserRequestBody) (*models.User, error)
 	CreateUserWithRole(userWithRole dto.CreateUserWithRoleRequestBody) (*models.User, error)
 	LoginUser(loginInfo dto.LoginUserRequestBody) (*string, error)
-	GetUsersWithPagination(filter map[string]interface{}, page, pageSize int) ([]models.User, int64, int, error)
+	GetUsersWithPagination(filter map[string]any, page, pageSize int) ([]models.User, int64, int, error)
 }
 
 type userService struct {
@@ -144,6 +144,6 @@ func (s *userService) CreateUserWithRole(data dto.CreateUserWithRoleRequestBody)
 	return &user, nil
 }
 
-func (s *userService) GetUsersWithPagination(filter map[string]interface{}, page, pageSize int) ([]models.User, int64, int, error) {
+func (s *userService) GetUsersWithPagination(filter map[string]any, page, pageSize int) ([]models.User, int64, int, error) {
 	return s.repo.FindAllByFilterAndPage(filter, page, pageSize)
 }

@@ -3,12 +3,13 @@ package repositories
 import (
 	"context"
 	"fdlp-standard-api/internal/models"
+	"maps"
 	"math"
 	"time"
 
+	"fdlp-standard-api/pkg/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"fdlp-standard-api/pkg/utils"
 
 	"github.com/sony/gobreaker"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -19,7 +20,7 @@ type UserRepository interface {
 	Create(user *models.User) error
 	Update(user *models.User) error
 	GetByEmail(email string) (*models.User, error)
-	FindAllByFilterAndPage(filter map[string]interface{}, page, pageSize int) ([]models.User, int64, int, error)
+	FindAllByFilterAndPage(filter map[string]any, page, pageSize int) ([]models.User, int64, int, error)
 }
 
 type userRepository struct {
@@ -35,7 +36,7 @@ func NewUserRepository(db *mongo.Database) UserRepository {
 }
 
 func (repo *userRepository) GetById(id string) (*models.User, error) {
-	result, err := utils.ExecuteWithBreaker(repo.breaker, func() (interface{}, error) {
+	result, err := utils.ExecuteWithBreaker(repo.breaker, func() (any, error) {
 		var user models.User
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
@@ -54,7 +55,7 @@ func (repo *userRepository) GetById(id string) (*models.User, error) {
 }
 
 func (repo *userRepository) GetByEmail(email string) (*models.User, error) {
-	result, err := utils.ExecuteWithBreaker(repo.breaker, func() (interface{}, error) {
+	result, err := utils.ExecuteWithBreaker(repo.breaker, func() (any, error) {
 		var user models.User
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
@@ -73,7 +74,7 @@ func (repo *userRepository) GetByEmail(email string) (*models.User, error) {
 }
 
 func (repo *userRepository) Create(user *models.User) error {
-	_, err := utils.ExecuteWithBreaker(repo.breaker, func() (interface{}, error) {
+	_, err := utils.ExecuteWithBreaker(repo.breaker, func() (any, error) {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 
@@ -83,7 +84,7 @@ func (repo *userRepository) Create(user *models.User) error {
 }
 
 func (repo *userRepository) Update(user *models.User) error {
-	_, err := utils.ExecuteWithBreaker(repo.breaker, func() (interface{}, error) {
+	_, err := utils.ExecuteWithBreaker(repo.breaker, func() (any, error) {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 
@@ -96,22 +97,20 @@ func (repo *userRepository) Update(user *models.User) error {
 	return err
 }
 
-func (repo *userRepository) FindAllByFilterAndPage(filter map[string]interface{}, page, pageSize int) ([]models.User, int64, int, error) {
+func (repo *userRepository) FindAllByFilterAndPage(filter map[string]any, page, pageSize int) ([]models.User, int64, int, error) {
 	type findResult struct {
 		users      []models.User
 		totalRows  int64
 		totalPages int
 	}
 
-	result, err := utils.ExecuteWithBreaker(repo.breaker, func() (interface{}, error) {
+	result, err := utils.ExecuteWithBreaker(repo.breaker, func() (any, error) {
 		var users []models.User
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 
 		mongoFilter := bson.M{}
-		for k, v := range filter {
-			mongoFilter[k] = v
-		}
+		maps.Copy(mongoFilter, filter)
 
 		totalRows, err := repo.db.Collection("users").CountDocuments(ctx, mongoFilter)
 		if err != nil {

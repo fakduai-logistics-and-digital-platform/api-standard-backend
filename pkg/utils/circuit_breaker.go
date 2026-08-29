@@ -23,7 +23,7 @@ func NewCircuitBreaker(name string) *gobreaker.TwoStepCircuitBreaker {
 }
 
 // ExecuteWithBreaker executes a function using a circuit breaker
-func ExecuteWithBreaker(cb *gobreaker.TwoStepCircuitBreaker, fn func() (interface{}, error)) (interface{}, error) {
+func ExecuteWithBreaker(cb *gobreaker.TwoStepCircuitBreaker, fn func() (any, error)) (any, error) {
 	success, err := cb.Allow()
 	if err != nil {
 		return nil, err

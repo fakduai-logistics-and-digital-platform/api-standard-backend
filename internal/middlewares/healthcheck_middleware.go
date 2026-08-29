@@ -36,7 +36,7 @@ func MongoHealthCheckMiddleware(config MongoHealthCheckConfig) echo.MiddlewareFu
 		return func(c echo.Context) error {
 			// Register endpoint
 			if c.Request().URL.Path == config.Endpoint {
-				_, err := utils.ExecuteWithBreaker(config.Breaker, func() (interface{}, error) {
+				_, err := utils.ExecuteWithBreaker(config.Breaker, func() (any, error) {
 					ctx, cancel := context.WithTimeout(c.Request().Context(), config.Timeout)
 					defer cancel()
 					return nil, config.PingFunc(ctx, readpref.Primary())
@@ -57,7 +57,7 @@ func MongoHealthCheckMiddleware(config MongoHealthCheckConfig) echo.MiddlewareFu
 			}
 
 			// Check health on every request
-			_, err := utils.ExecuteWithBreaker(config.Breaker, func() (interface{}, error) {
+			_, err := utils.ExecuteWithBreaker(config.Breaker, func() (any, error) {
 				ctx, cancel := context.WithTimeout(c.Request().Context(), config.Timeout)
 				defer cancel()
 				return nil, config.PingFunc(ctx, readpref.Primary())
@@ -94,7 +94,7 @@ func RedisHealthCheckMiddleware(config RedisHealthCheckConfig) echo.MiddlewareFu
 		return func(c echo.Context) error {
 			// Register endpoint
 			if c.Request().URL.Path == config.Endpoint {
-				_, err := utils.ExecuteWithBreaker(config.Breaker, func() (interface{}, error) {
+				_, err := utils.ExecuteWithBreaker(config.Breaker, func() (any, error) {
 					ctx, cancel := context.WithTimeout(c.Request().Context(), config.Timeout)
 					defer cancel()
 					return nil, config.PingFunc(ctx)
@@ -115,7 +115,7 @@ func RedisHealthCheckMiddleware(config RedisHealthCheckConfig) echo.MiddlewareFu
 			}
 
 			// Check health on every request
-			_, err := utils.ExecuteWithBreaker(config.Breaker, func() (interface{}, error) {
+			_, err := utils.ExecuteWithBreaker(config.Breaker, func() (any, error) {
 				ctx, cancel := context.WithTimeout(c.Request().Context(), config.Timeout)
 				defer cancel()
 				return nil, config.PingFunc(ctx)

@@ -2,10 +2,9 @@ package models
 
 import (
 	"time"
+	"uuid"
 
 	"fdlp-standard-api/internal/types"
-
-	"github.com/google/uuid"
 )
 
 type Role struct {

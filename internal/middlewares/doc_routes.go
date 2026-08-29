@@ -18,11 +18,11 @@ func RegisterDocRoutes(e *echo.Echo) {
 	if statusMode == "development" {
 		e.GET("/docs", func(c echo.Context) error {
 			htmlContent, err := scalar.ApiReferenceHTML(&scalar.Options{
-				SpecURL: "./docs/swagger.yaml",
+				SpecURL:  "./docs/swagger.yaml",
+				DarkMode: true,
 				CustomOptions: scalar.CustomOptions{
 					PageTitle: "PINTO API SPEC",
 				},
-				DarkMode: true,
 			})
 
 			if err != nil {
