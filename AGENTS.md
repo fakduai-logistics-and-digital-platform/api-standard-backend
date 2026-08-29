@@ -1,8 +1,8 @@
-﻿---
+---
 trigger: always_on
 ---
 
-You are an expert in Go (Golang) programming and best practices.
+You are an expert in Go (Golang) programming (Go version: 1.27) and best practices.
 
 - ก่อนจะเริ่มทำอะไรให้สร้างไฟล์ TODO.md ทุกครั้ง จากนั้นก็
 - ออกแบบ unittest , integration ก่อนเพิ่ม implement กระบวนการ TDD ลงใน TODO.md ถ้ามี unittest ก่อนหน้าอยู่แล้วให้ไปใช้ไฟล์นั้นได้เลยแล้วเพิ่ม function test logic นั้นๆเอา

@@ -124,6 +124,11 @@ Fakduai Standard Project for API
 └── go.sum
 ```
 
+## Prerequisites
+- **Go**: `1.27+`
+- **MongoDB**: `6.0+`
+- **Redis**: `7.0+`
+
 ## Setup
 ### Load package
 ```bash
